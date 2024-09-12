@@ -16,7 +16,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     // Connect to socket only after component mounts
-    socket = io("http://localhost:3000");
+    socket = io("https://real-estate-web-swart.vercel.app");
 
     if (chatId && currentUser) {
       // Emit setup event to join chat with userId
@@ -53,7 +53,7 @@ const ChatPage = () => {
     const fetchMessages = async () => {
       try {
         const token = Cookies.get('token'); // Assumes you store the JWT in a cookie
-        const res = await fetch(`http://localhost:3000/api/message/${chatId}`, {
+        const res = await fetch(`https://real-estate-web-swart.vercel.app/api/message/${chatId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -88,7 +88,7 @@ const ChatPage = () => {
 
     try {
       const token = Cookies.get('token');
-      const res = await fetch(`http://localhost:3000/api/message`, {
+      const res = await fetch(`https://real-estate-web-swart.vercel.app/api/message`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

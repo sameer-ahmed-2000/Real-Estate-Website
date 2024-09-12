@@ -53,7 +53,7 @@ const Listing = () => {
   const startChatWithOwner = async () => {
     try {
       // Send request to backend to create or get the chat
-      const res = await fetch("http://localhost:3000/api/chat", {
+      const res = await fetch("https://real-estate-web-swart.vercel.app/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

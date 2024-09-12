@@ -18,7 +18,7 @@ export default function Contact({ listing }) {
   useEffect(() => {
     const fetchLandlord = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/user/${listing.userRef}`, {
+        const res = await fetch(`https://real-estate-web-swart.vercel.app/api/user/${listing.userRef}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`, // Include token
@@ -48,7 +48,7 @@ export default function Contact({ listing }) {
 
     try {
       setSending(true)
-      const res = await fetch("http://localhost:3000/api/conversation/create", {
+      const res = await fetch("https://real-estate-web-swart.vercel.app/api/conversation/create", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export default function Contact({ listing }) {
       }
       else {
         // IF Conversation created successfully
-        const resMsg = await fetch("http://localhost:3000/api/message/create", {
+        const resMsg = await fetch("https://real-estate-web-swart.vercel.app/api/message/create", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -99,31 +99,6 @@ export default function Contact({ listing }) {
   }
   return (
     <>
-      {/* {landlord && (
-        <div className='flex flex-col gap-2'>
-          <p>
-            Contact <span className='font-semibold'>{landlord.username}</span>{' '}
-            for{' '}
-            <span className='font-semibold'>{listing.name.toLowerCase()}</span>
-          </p>
-          <textarea
-            name='message'
-            id='message'
-            rows='2'
-            value={message}
-            onChange={onChange}
-            placeholder='Enter your message here...'
-            className='w-full border p-3 rounded-lg'
-          ></textarea>
-
-          <Link
-            to={`mailto:${landlord.email}?subject=Regarding ${listing.name}&body=${message}`}
-            className='bg-slate-700 text-white text-center p-3 uppercase rounded-lg hover:opacity-95'
-          >
-            Send Message
-          </Link>
-        </div>
-      )} */}
       {
         sending ?
           <div >

@@ -6,6 +6,7 @@ import {
   ref,
   uploadBytesResumable,
 } from 'firebase/storage';
+import Cookies from 'js-cookie';
 import { app } from '../firebase';
 import {
   updateUserStart,
@@ -69,15 +70,16 @@ export default function Profile() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
-
+  const token = Cookies.get('token');
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`https://real-estate-web-swart.vercel.app/api/user/update/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });
@@ -97,8 +99,12 @@ export default function Profile() {
   const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`http://localhost:3000/api/user/delete/${currentUser._id}`, {
+      const res = await fetch(`https://real-estate-web-swart.vercel.app/api/user/delete/${currentUser._id}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       });
       const data = await res.json();
       if (data.success === false) {
@@ -114,7 +120,7 @@ export default function Profile() {
   const handleSignOut = async () => {
     try {
       dispatch(signOutUserStart());
-      const res = await fetch('http://localhost:3000/api/auth/signout');
+      const res = await fetch('https://real-estate-web-swart.vercel.app/api/auth/signout');
       const data = await res.json();
       if (data.success === false) {
         dispatch(deleteUserFailure(data.message));
@@ -129,23 +135,39 @@ export default function Profile() {
   const handleShowListings = async () => {
     try {
       setShowListingsError(false);
-      const res = await fetch(`http://localhost:3000/api/user/listings/${currentUser._id}`);
+      console.log(currentUser._id)
+      
+      const res = await fetch(`https://real-estate-web-swart.vercel.app/api/user/listings/${currentUser._id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
       const data = await res.json();
-      if (data.success === false) {
+      
+      if (data.success === false || data.listings.length === 0) {  // Check if listings are empty
         setShowListingsError(true);
+        setUserListings([]); // Clear the listings array
         return;
       }
 
-      setUserListings(data);
+      setUserListings(data.listings);  // Set the listings if available
     } catch (error) {
       setShowListingsError(true);
     }
   };
 
+
   const handleListingDelete = async (listingId) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/listing/delete/${listingId}`, {
+      const res = await fetch(`https://real-estate-web-swart.vercel.app/api/listing/delete/${listingId}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       });
       const data = await res.json();
       if (data.success === false) {
@@ -259,7 +281,7 @@ export default function Profile() {
               key={listing._id}
               className='border rounded-lg p-3 flex justify-between items-center gap-4'
             >
-              <Link to={`http://localhost:3000/listing/${listing._id}`}>
+              <Link to={`/listing/${listing._id}`}>
                 <img
                   src={listing.imageUrls[0]}
                   alt='listing cover'
@@ -268,7 +290,7 @@ export default function Profile() {
               </Link>
               <Link
                 className='text-slate-700 font-semibold  hover:underline truncate flex-1'
-                to={`http://localhost:3000/listing/${listing._id}`}
+                to={`/listing/${listing._id}`}
               >
                 <p>{listing.name}</p>
               </Link>
@@ -280,7 +302,7 @@ export default function Profile() {
                 >
                   Delete
                 </button>
-                <Link to={`http://localhost:3000/update-listing/${listing._id}`}>
+                <Link to={`/update-listing/${listing._id}`}>
                   <button className='text-green-700 uppercase'>Edit</button>
                 </Link>
               </div>

@@ -126,7 +126,7 @@ const CreateListing = () => {
       setLoading(true);
       setError(false);
       console.log(currentUser._id)
-      const res = await fetch("http://localhost:3000/api/listing/create", {
+      const res = await fetch("https://real-estate-web-swart.vercel.app/api/listing/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

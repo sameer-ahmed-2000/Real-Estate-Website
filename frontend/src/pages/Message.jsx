@@ -40,7 +40,7 @@ const Message = () => {
                 setConversationLoading(true);
                 console.log(currentUser);
     
-                const res = await fetch(`http://localhost:3000/api/conversation/${currentUser._id}`, {
+                const res = await fetch(`https://real-estate-web-swart.vercel.app/api/conversation/${currentUser._id}`, {
                     method: 'GET',
                     headers: {
                         "Content-Type": "application/json",

@@ -9,7 +9,7 @@ import { signal } from "@preact/signals-react"
 
 //production
 // const Node_Env = "local"
-export const socket = io("http://localhost:3000/", {
+export const socket = io("https://real-estate-web-swart.vercel.app/", {
     headers: {
         "user-agent": "chrome"
     }

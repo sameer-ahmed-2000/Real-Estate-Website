@@ -30,7 +30,7 @@ const Chat = ({ conversationInfo }) => {
     (async () => {
       try {
         setMessageLoading(true)
-        const res = await fetch(`http://localhost:3000/api/message?sender=${trackConversation.sender}&receiver=${trackConversation.receiver}`, {
+        const res = await fetch(`https://real-estate-web-swart.vercel.app/api/message?sender=${trackConversation.sender}&receiver=${trackConversation.receiver}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`, // Include token
@@ -114,7 +114,7 @@ const Chat = ({ conversationInfo }) => {
     e.preventDefault();
     sendMessageTOSocket();
     try {
-      const sendMsgToDB = await fetch("http://localhost:3000/api/message/create", {
+      const sendMsgToDB = await fetch("https://real-estate-web-swart.vercel.app/api/message/create", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(
@@ -151,7 +151,7 @@ const Chat = ({ conversationInfo }) => {
 
   const handleConversationDelete = async () => {
     try {
-      const deleteChat = await fetch(`/api/conversation/delete/${_id}`, {
+      const deleteChat = await fetch(`https://real-estate-web-swart.vercel.app/api/conversation/delete/${_id}`, {
         method: 'DELETE'
       });
       if (deleteChat.ok) {
