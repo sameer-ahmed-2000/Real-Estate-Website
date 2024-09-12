@@ -1,6 +1,6 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fontawesome/react-fontawesome";
+import { faFacebook, faInstagram } from "@fontawesome/free-brands-svg-icons";
 
 export default function Contact() {
   return (
