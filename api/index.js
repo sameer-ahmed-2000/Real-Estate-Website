@@ -77,12 +77,12 @@ app.use((err, req, res, next) => {
 // --------------------------Socket.IO Integration------------------------------
 
 const io = new Server(expressServer, {
-
   cors: {
-    origin: "http://localhost:5173", // Frontend URL
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
     credentials: true,
   },
 });
+
 
 io.on("connection", (socket) => {
   console.log(`socket connected with ${socket.id}`);

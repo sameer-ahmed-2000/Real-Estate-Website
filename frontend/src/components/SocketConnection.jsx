@@ -4,17 +4,17 @@ import { io } from "socket.io-client"
 import { setNotification, setSingleNotification } from "../redux/notifications/notificationSlice"
 import { activeChatId } from "./Conversation"
 import { signal } from "@preact/signals-react"
-
+import Cookies from 'js-cookie';
 
 
 //production
 // const Node_Env = "local"
-export const socket = io("https://real-estate-web-swart.vercel.app/", {
+export const socket = io("https://real-estate-web-swart.vercel.app", {
     headers: {
         "user-agent": "chrome"
     }
 })
-
+const token = Cookies.get('token');
 
 export const notifySignal = signal({
     notifications: []
@@ -36,7 +36,13 @@ const SocketConnection = () => {
     useEffect(() => {
         const loadPrevNotification = async () => {
             try {
-                const unseenNotificaton = await fetch(`/api/notification/${currentUser._id}`);
+                const unseenNotificaton = await fetch(`https://real-estate-web-swart.vercel.app/api/notification/${currentUser._id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`, // Make sure the token is valid and correctly included
+                    },
+                });
                 const res = await unseenNotificaton.json();
                 if (res.success === false) {
                     console.log(res);
@@ -59,9 +65,11 @@ const SocketConnection = () => {
 
     const sendNotificationToDB = async (notificationData) => {
         try {
-            const sendNotification = await fetch("/api/notification/create", {
+            const sendNotification = await fetch("https://real-estate-web-swart.vercel.app/api/notification/create", {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(notificationData)
             })
             const response = await sendNotification.json();
@@ -96,12 +104,6 @@ const SocketConnection = () => {
             }
         })
     })
-
-
-
-
-
-
     return (
         <>
         </>

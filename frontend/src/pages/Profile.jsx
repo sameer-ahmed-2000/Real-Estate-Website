@@ -135,31 +135,33 @@ export default function Profile() {
   const handleShowListings = async () => {
     try {
       setShowListingsError(false);
-      console.log(currentUser._id)
-      
-      const res = await fetch(`https://real-estate-web-swart.vercel.app/api/user/listings/${currentUser._id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+
+      const res = await fetch(
+        `https://real-estate-web-swart.vercel.app/api/user/listings/${currentUser._id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
 
       const data = await res.json();
-      
-      if (data.success === false || data.listings.length === 0) {  // Check if listings are empty
+      console.log('API Response:', data);
+
+      if (!Array.isArray(data) || data.length === 0) {
         setShowListingsError(true);
-        setUserListings([]); // Clear the listings array
+        setUserListings([]); // Clear listings if no data
         return;
       }
 
-      setUserListings(data.listings);  // Set the listings if available
+      setUserListings(data); // Set the listings if available
     } catch (error) {
+      console.error('Error fetching listings:', error);
       setShowListingsError(true);
     }
   };
-
-
   const handleListingDelete = async (listingId) => {
     try {
       const res = await fetch(`https://real-estate-web-swart.vercel.app/api/listing/delete/${listingId}`, {
